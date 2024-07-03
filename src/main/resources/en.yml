@@ -1,0 +1,7 @@
+#Error/Warnings
+ReloadServerWarning: "&cReload the server for this to take effect!"
+OnlyForPlayersCMD: "&cThis command is only for players!"
+NoPermissionCMD: "&cYou don't have permission to use this command!"
+CorrectUsage: "&cCorrect Usage: "
+InvalidZanpakuto: "&cThis zanpakuto does not exist!"
+InvalidPlayer: "&cThis player does not exist!"

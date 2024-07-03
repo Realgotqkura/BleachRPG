@@ -1,0 +1,4 @@
+name: BleachRPG
+version: '${project.version}'
+main: com.realgotqkura.bleachrpg.BleachRPG
+api-version: '1.20'
