@@ -1,7 +1,33 @@
-#Error/Warnings
-ReloadServerWarning: "&c¡Recarga el servidor para que esto surta efecto!"
-OnlyForPlayersCMD: "&c¡Este comando es solo para jugadores!"
-NoPermissionCMD: "&c¡No tienes permiso para usar este comando!"
-CorrectUsage: "&cUso Correcto: "
-InvalidZanpakuto: "&cEste zanpakuto no existe!"
-InvalidPlayer: "&cEste jugador no existe!"
+All:
+  #Error/Warnings
+  ReloadServerWarning: "&c¡Recarga el servidor para que esto surta efecto!"
+  OnlyForPlayersCMD: "&c¡Este comando es solo para jugadores!"
+  NoPermissionCMD: "&c¡No tienes permiso para usar este comando!"
+  CorrectUsage: "&cUso Correcto: "
+  InvalidZanpakuto: "&cEste zanpakuto no existe!"
+  InvalidPlayer: "&cEste jugador no existe!"
+  InvalidItem: "&c¡Este artículo no existe!"
+  NotEnoughReiatsu: "&c¡No tienes suficiente reiatsu!"
+
+  #-------------------GUI ITEMS----------------#
+  GUICloseName: "&cVolver a la última GUI"
+
+
+
+  #------------------Tutorial GUI-----------------#
+
+  DashingTutName: "&f&lDashing / FlashStep"
+  DashingTutDesc1: "&7Dashing y FlashStepping son cruciales"
+  DashingTutDesc2: "&7parte de lejía y este complemento. Cada"
+  DashingTutDesc3: "&7facción puede hacerlo sosteniendo su arma y"
+  DashingTutDesc4: "&7haciendo clic en &bQ&7. Hay un "
+  Cooldown: "&7enfriarse"
+
+  XPTutName: "Ganar XP"
+  XPTutDesc1: "&7Obtener XP es la principal forma de progresar."
+  XPTutDesc2: "&7Hay 2 tipos de XP. XP espiritual y"
+  XPTutDesc3: "&7XP de facción."
+  XPTutDesc4: "&7Obtienes XP espiritual matando monstruos, meditando"
+  XPTutDesc5: "&7y entrenando con tu espíritu interior."
+  XPTutDesc6: "&7Puedes ganar XP de facción realizando misiones para"
+  XPTutDesc7: "&7tu facción específica."

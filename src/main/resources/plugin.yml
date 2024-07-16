@@ -1,4 +1,28 @@
 name: BleachRPG
 version: '${project.version}'
 main: com.realgotqkura.bleachrpg.BleachRPG
-api-version: '1.20'
+api-version: '1.16'
+
+commands:
+  bleachlang:
+    description: 'Changes the language of the BleachRPG plugin'
+    permission: 'BleachOP.use'
+  getzanpakuto:
+    description: 'Gives a zanpakuto of your choosing'
+    permission: 'BleachOP.use'
+  bleachrpg_tutorial:
+    description: 'Opens the Tutorial GUI for BleachRPG'
+  bleachitem:
+    description: 'Gives you a specific item from BleachRPG'
+    permission: 'BleachOP.use'
+  bleachRPG_debug:
+    description: 'Debug commands for BleachRPG'
+    permission: 'BleachDev.use'
+  spiritualLvlgui:
+    description: "Opens the spiritual Level GUI"
+  meditate:
+    description: "Start Meditating in BleachRPG"
+  bleachnpcspawn:
+    description: "Spawns a specific npc to in your location"
+    permission: "BleachOP.use"
+

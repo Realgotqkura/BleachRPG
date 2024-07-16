@@ -1,7 +1,33 @@
-#Error/Warnings
-ReloadServerWarning: "&cReload the server for this to take effect!"
-OnlyForPlayersCMD: "&cThis command is only for players!"
-NoPermissionCMD: "&cYou don't have permission to use this command!"
-CorrectUsage: "&cCorrect Usage: "
-InvalidZanpakuto: "&cThis zanpakuto does not exist!"
-InvalidPlayer: "&cThis player does not exist!"
+All:
+  #Error/Warnings
+  ReloadServerWarning: "&cReload the server for this to take effect!"
+  OnlyForPlayersCMD: "&cThis command is only for players!"
+  NoPermissionCMD: "&cYou don't have permission to use this command!"
+  CorrectUsage: "&cCorrect Usage: "
+  InvalidZanpakuto: "&cThis zanpakuto does not exist!"
+  InvalidPlayer: "&cThis player does not exist!"
+  InvalidItem: "&cThis item does not exist!"
+  NotEnoughReiatsu: "&cYou don't have enough reiatsu!"
+
+  #-----------------------GUI ITEMS---------------------#
+  GUICloseName: "&cReturn to last GUI"
+
+
+  #-------------------Tutorial GUI---------------------#
+
+  DashingTutName: "&f&lDashing / FlashStep"
+  DashingTutDesc1: "&7Dashing and FlashStepping is a crucial"
+  DashingTutDesc2: "&7part of bleach and this plugin. Every"
+  DashingTutDesc3: "&7faction can do it by holding their weapon and"
+  DashingTutDesc4: "&7clicking &bQ&7. There is a "
+  Cooldown: "&7cooldown"
+
+
+  XPTutName: "Gaining XP"
+  XPTutDesc1: "&7Gaining XP is the main way of progressing."
+  XPTutDesc2: "&7There are 2 types of XP. Spiritual XP and"
+  XPTutDesc3: "&7Faction XP."
+  XPTutDesc4: "&7You gain Spiritual XP by killing mob, meditating"
+  XPTutDesc5: "&7and sparring with your inner spirit."
+  XPTutDesc6: "&7You can gain Faction XP by doing missions for"
+  XPTutDesc7: "&7your specific faction."
