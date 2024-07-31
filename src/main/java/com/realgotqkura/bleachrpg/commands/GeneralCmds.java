@@ -2,12 +2,15 @@ package com.realgotqkura.bleachrpg.commands;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.configs.PlayerConfig;
+import com.realgotqkura.bleachrpg.configs.XPConfig;
+import com.realgotqkura.bleachrpg.events.general.RegionEvents;
 import com.realgotqkura.bleachrpg.guis.MeditationGUI;
 import com.realgotqkura.bleachrpg.guis.SpiritualLevelInv;
 import com.realgotqkura.bleachrpg.guis.TutorialGUI;
 import com.realgotqkura.bleachrpg.items.BleachItems;
 import com.realgotqkura.bleachrpg.utils.LangUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
+import com.realgotqkura.bleachrpg.utils.objectclasses.BleachRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,10 +25,12 @@ public class GeneralCmds implements CommandExecutor {
 
     final BleachRPG plugin;
     final PlayerConfig plConfig;
+    final XPConfig xpConfig;
 
-    public GeneralCmds(BleachRPG plugin, PlayerConfig playerConfig){
+    public GeneralCmds(BleachRPG plugin, PlayerConfig playerConfig, XPConfig xpConfig){
         this.plugin = plugin;
         this.plConfig = playerConfig;
+        this.xpConfig = xpConfig;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -83,6 +88,68 @@ public class GeneralCmds implements CommandExecutor {
             MeditationGUI gui = new MeditationGUI(plugin, plConfig);
 
             gui.createInv(player);
+        }
+
+        if(label.equalsIgnoreCase("bleach_reloadConfigs")){
+            if(!player.hasPermission("BleachOP.use")) {
+                player.sendMessage(RandomUtils.color("&cYou don't have permission to use this command"));
+                return true;
+            }
+
+            plugin.reloadConfig();
+            plConfig.reloadConfig();
+            xpConfig.reloadConfig();
+            player.sendMessage(RandomUtils.color("&aSuccessfully Reloaded the configs!"));
+            return true;
+        }
+
+        if(label.equalsIgnoreCase("bleach_admin_regionwand")){
+            if(!player.hasPermission("BleachOP.use")) {
+                player.sendMessage(RandomUtils.color("&cYou don't have permission to use this command"));
+                return true;
+            }
+
+            player.getInventory().addItem(BleachItems.bleachRegions(player));
+            return true;
+        }
+
+        if(label.equalsIgnoreCase("bleach_set_arena_region")){
+            if(!player.hasPermission("BleachOP.use")) {
+                player.sendMessage(RandomUtils.color("&cYou don't have permission to use this command"));
+                return true;
+            }
+
+            if(args.length == 0){
+                BleachRegion region = new BleachRegion(player);
+
+                plugin.getConfig().set("Arena.firstLocation", region.getLocations()[0]);
+                plugin.getConfig().set("Arena.secondLocation", region.getLocations()[1]);
+                plugin.saveConfig();
+
+                player.sendMessage(RandomUtils.color("&aSuccessfully setup the arena region!"));
+                return true;
+            }
+
+            if(args[0].equalsIgnoreCase("player_location")){
+                plugin.getConfig().set("Arena.playerLocation", player.getLocation());
+                plugin.saveConfig();
+
+                player.sendMessage(RandomUtils.color("&aSuccessfully set the location of the player"));
+
+                return true;
+            }
+
+            if(args[0].equalsIgnoreCase("boss_location")){
+                plugin.getConfig().set("Arena.bossLocation", player.getLocation());
+                plugin.saveConfig();
+
+                player.sendMessage(RandomUtils.color("&aSuccessfully set the location of the boss"));
+
+                return true;
+            }
+
+
+            return true;
         }
 
         return false;

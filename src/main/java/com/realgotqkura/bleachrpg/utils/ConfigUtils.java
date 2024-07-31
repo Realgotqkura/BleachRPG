@@ -2,9 +2,11 @@ package com.realgotqkura.bleachrpg.utils;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.npc.npcs.UraharaNPC;
+import com.realgotqkura.bleachrpg.utils.voicelines.ShikaiVoiceLines;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class ConfigUtils {
     }
 
     public void checkDefaultValues(){
+        ShikaiVoiceLines shikaiVoiceLines = new ShikaiVoiceLines();
         //Cooldowns
         checkDoubleIfNull("flashStepCD", 2.5);
         checkDoubleIfNull("blockingCDAfterBreak", 5);
@@ -32,6 +35,7 @@ public class ConfigUtils {
         checkDoubleIfNull("defaultReiatsuCount", 100);
         checkDoubleIfNull("defaultReiatsuRegen", 1.1);
         checkDoubleIfNull("heavyAttackDamageMultiplier", 1.25d);
+        checkIntIfNull("Shikai.fightcooldownInSecs", 300);
 
         //AbilityDamage
         checkIntIfNull("Zangetsu.getsugaTenshouDamage", 6);
@@ -67,6 +71,14 @@ public class ConfigUtils {
         checkStringIfNull("Urahara.SoulReaperLinesAnswer", "19");
         checkStringIfNull("Urahara.SoulReaperLinesAnsnwerWrongLine", "&fUnlucky... Talk to me later.");
         checkBooleanIfNull("Urahara.SoulReaperLinesNoQuestion", false);
+        checkIntIfNull("Urahara.SoulReaperLinesSpeedInTicks", 40);
+        checkStringIfNull("Zangetsu.Name", "&7&k: " + ChatColor.of("#1d9ea3") + "Zangetsu &7&k:");
+        checkStringListIfNull("Zangetsu.shikaiLinesBeforeFight", Arrays.asList(shikaiVoiceLines.getVoiceLines("zangetsu").get(0)));
+        checkStringListIfNull("Zangetsu.shikaiLinesAIWinFight", Arrays.asList(shikaiVoiceLines.getVoiceLines("zangetsu").get(1)));
+        checkStringListIfNull("Zangetsu.shikaiLinesAILoseFight", Arrays.asList(shikaiVoiceLines.getVoiceLines("zangetsu").get(2)));
+        checkIntIfNull("Zangetsu.shikaiVoiceLinesBeforeFightSpeedInTicks", 30);
+        checkIntIfNull("Zangetsu.shikaiVoiceLinesAfterFightSpeedInTicks", 50);
+        checkIntIfNull("shikaiHealth", 200);
     }
 
 

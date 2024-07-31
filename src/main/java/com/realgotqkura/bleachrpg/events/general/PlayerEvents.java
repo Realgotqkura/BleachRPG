@@ -20,9 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -131,14 +129,49 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void onMoveNPCLook(PlayerMoveEvent event){
-        for(Entity entity : event.getPlayer().getNearbyEntities(5,5,5)){
-            if(!entity.hasMetadata("NPC"))
-                continue;
-
-            NPC npc = CitizensAPI.getNPCRegistry().getNPC(entity);
-            NPCUtils.lookAtPlayer(npc, event.getPlayer());
+        Player player = event.getPlayer();
+        Location loc1 = new Location(player.getWorld(), player.getLocation().getX() + 10, 0, player.getLocation().getZ() + 10);
+        Location loc2 = new Location(player.getWorld(), player.getLocation().getX() - 10, 0, player.getLocation().getZ() - 10);
+        for(NPC npc : CitizensAPI.getNPCRegistry()){
+            if(npc.isSpawned()){
+                if(RandomUtils.isInside(npc.getEntity().getLocation(), loc1, loc2) && !npc.getEntity().hasMetadata("Sleeping")) {
+                    NPCUtils.lookAtPlayer(npc, player);
+                }
+            }
         }
     }
+
+    @EventHandler
+    public void arenaFightCMD(PlayerCommandPreprocessEvent event){
+        Player player = event.getPlayer();
+
+        if(!plugin.getConfig().getBoolean("Arena.isBusy"))
+            return;
+
+        if(!plugin.getConfig().getString("Arena.playerFighting").equals(player.getName()))
+            return;
+
+        event.setCancelled(true);
+        player.sendMessage(RandomUtils.color("&cYou can't send commands whilst in battle!"));
+    }
+
+    @EventHandler
+    public void arenaFightLogOut(PlayerQuitEvent event){
+        Player player = event.getPlayer();
+
+        if(!plugin.getConfig().getBoolean("Arena.isBusy"))
+            return;
+
+        if(!plugin.getConfig().getString("Arena.playerFighting").equals(player.getName()))
+            return;
+
+        player.teleport(player.getWorld().getSpawnLocation());
+        plugin.getConfig().set("Arena.isBusy", false);
+        plugin.getConfig().set("Arena.playerFighting", "");
+        plugin.saveConfig();
+    }
+
+
 
 
 

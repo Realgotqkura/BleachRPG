@@ -1,17 +1,24 @@
 package com.realgotqkura.bleachrpg.utils;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import com.realgotqkura.bleachrpg.BleachRPG;
-import com.realgotqkura.bleachrpg.utils.objectclasses.Ability;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -243,5 +250,70 @@ public class RandomUtils {
 
         return false;
     }
+
+    public static String locationToString(Location loc){
+        return RandomUtils.color("&7world: &a" + loc.getWorld().getName() + "&7, x: &a" + loc.getX() + "&7, &ay: " + loc.getY() + "&7, &az: " + loc.getZ());
+    }
+
+    public static boolean isInside(Location checkLoc, Location firstLoc, Location secondLoc){
+        int[] xSorted = new int[]{firstLoc.getBlockX(), secondLoc.getBlockX()};
+        int[] zSorted = new int[]{firstLoc.getBlockZ(), secondLoc.getBlockZ()};
+        Arrays.sort(xSorted);
+        Arrays.sort(zSorted);
+
+        if((checkLoc.getX() >= xSorted[0] && checkLoc.getX() <= xSorted[1]) &&
+                (checkLoc.getZ() >= zSorted[0] && checkLoc.getZ() <= zSorted[1]))
+            return true;
+
+        return false;
+    }
+
+
+    public static double calculateDamageApplied(double damage, LivingEntity victim) {
+        int epf = getEPFLivingEntity(victim);
+        double points = victim.getAttribute(Attribute.GENERIC_ARMOR).getValue();
+        double toughness = victim.getAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS).getValue();
+        PotionEffect effect = victim.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+        int resistance = effect == null ? 0 : effect.getAmplifier();
+        double withArmorAndToughness = damage * (1 - Math.min(20, Math.max(points / 5, points - damage / (2 + toughness / 4))) / 25);
+        double withResistance = withArmorAndToughness * (1 - (resistance * 0.2));
+        double withEnchants = withResistance * (1 - (Math.min(20.0, epf) / 25));
+        return withEnchants;
+    }
+
+    private static int getEPFLivingEntity(LivingEntity lv) {
+        ItemStack helm = lv.getEquipment().getHelmet();
+        ItemStack chest = lv.getEquipment().getChestplate();
+        ItemStack legs = lv.getEquipment().getLeggings();
+        ItemStack boot = lv.getEquipment().getBoots();
+
+        return (helm != null ? helm.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) : 0) +
+                (chest != null ? chest.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) : 0) +
+                (legs != null ? legs.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) : 0) +
+                (boot != null ? boot.getEnchantmentLevel(Enchantment.PROTECTION_ENVIRONMENTAL) : 0);
+    }
+
+
+    public static String applyPlaceholdersToString(String s, Player player){
+        String rString = s;
+        rString = rString.replace("%player_name%", player.getName());
+        return rString;
+    }
+
+
+    /**
+     * Basically just applies the placeholders to all lines in the String[] given.
+     * @return the processed String[] with the placeholders changed
+     */
+    public static String[] processVoiceLines(List<String> array, Player player){
+        String[] rArray = new String[array.size()];
+
+        for(int i = 0; i < array.size(); i++){
+            rArray[i] = applyPlaceholdersToString(array.get(i), player);
+        }
+
+        return rArray;
+    }
+
 
 }

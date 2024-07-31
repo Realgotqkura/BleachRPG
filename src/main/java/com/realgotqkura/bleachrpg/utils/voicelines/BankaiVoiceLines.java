@@ -1,10 +1,11 @@
-package com.realgotqkura.bleachrpg.utils;
+package com.realgotqkura.bleachrpg.utils.voicelines;
 
-import java.util.ArrayList;
+import com.realgotqkura.bleachrpg.utils.RandomUtils;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class VoiceLines {
+public class BankaiVoiceLines {
 
 
     public String[] zangetsuVoicelines = new String[]{

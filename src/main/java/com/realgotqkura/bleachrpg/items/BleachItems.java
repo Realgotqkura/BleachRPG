@@ -1,10 +1,13 @@
 package com.realgotqkura.bleachrpg.items;
 
+import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.utils.ItemUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
+import com.realgotqkura.bleachrpg.utils.objectclasses.BleachRegion;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,6 +38,34 @@ public class BleachItems {
         meta.setLore(lore);
         meta.addEnchant(Enchantment.DURABILITY,1,true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.getPersistentDataContainer().set(RandomUtils.nskStorage.get("BleachUncraftable"), PersistentDataType.BOOLEAN, true);
+        stack.setItemMeta(meta);
+        stack = ItemUtils.makeItemUnstackable(stack);
+        return stack;
+    }
+
+    public static ItemStack bleachRegions(Player player){
+        ItemStack stack = new ItemStack(Material.STICK);
+        ItemMeta meta = stack.getItemMeta();
+
+        BleachRegion region = new BleachRegion(player);
+
+        meta.setDisplayName(RandomUtils.color(ChatColor.of("#a577e6") + "&lBleachRPG Region Wand"));
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add(RandomUtils.color("&8Used to make regions for boss fights."));
+        lore.add(RandomUtils.color("&8Don't bother setting Y coords as they are useless."));
+        lore.add(RandomUtils.color("&c!! REFRESHES AFTER RELOAD !!"));
+        lore.add("");
+        lore.add(RandomUtils.color("&e&lLEFT CLICK &r&7to set the first location"));
+        lore.add(RandomUtils.color("&e&lRIGHT CLICK &r&7to set the second location"));
+        lore.add("");
+        lore.add(RandomUtils.color("&7First Location: " + RandomUtils.locationToString(region.getLocations()[0])));
+        lore.add(RandomUtils.color("&7First Location: " + RandomUtils.locationToString(region.getLocations()[1])));
+        meta.setLore(lore);
+        meta.addEnchant(Enchantment.DURABILITY, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.getPersistentDataContainer().set(RandomUtils.nskStorage.get("BleachItem"), PersistentDataType.STRING, "bleachRegions");
         meta.getPersistentDataContainer().set(RandomUtils.nskStorage.get("BleachUncraftable"), PersistentDataType.BOOLEAN, true);
         stack.setItemMeta(meta);
         stack = ItemUtils.makeItemUnstackable(stack);

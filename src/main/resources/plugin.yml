@@ -25,4 +25,18 @@ commands:
   bleachnpcspawn:
     description: "Spawns a specific npc to in your location"
     permission: "BleachOP.use"
+  bleach_reloadConfigs:
+    description: "Reload the BleachRPG configs"
+    permission: "BleachOP.use"
+  bleach_admin_regionwand:
+    description: "Gives the region wand for BleachRPG"
+    permission: "BleachOP.use"
+  bleach_set_arena_region:
+    description: "Sets the arena region from your wand"
+    permission: "BleachOP.use"
+
+depend:
+  - ProtocolLib
+  - Citizens
+  - Sentinel
 

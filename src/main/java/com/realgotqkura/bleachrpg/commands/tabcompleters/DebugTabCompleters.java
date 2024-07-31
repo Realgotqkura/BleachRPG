@@ -16,6 +16,9 @@ public class DebugTabCompleters implements TabCompleter {
                 List<String> args = new ArrayList<>();
                 args.add("SimulateLvlUp");
                 args.add("resetLevelAndXP");
+                args.add("toggleTestMode");
+                args.add("tp_to_arena");
+                args.add("startFight");
                 return args;
             }
         }

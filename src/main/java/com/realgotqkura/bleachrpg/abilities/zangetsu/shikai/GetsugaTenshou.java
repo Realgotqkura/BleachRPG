@@ -1,6 +1,7 @@
 package com.realgotqkura.bleachrpg.abilities.zangetsu.shikai;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
+import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.SoundAndEffectsUtils;
 import com.realgotqkura.bleachrpg.utils.objectclasses.Ability;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
@@ -30,15 +31,15 @@ public class GetsugaTenshou implements Ability {
 
     @Override
     public void activateAbility(Player activator, Player target) {
-        if(!checkCooldown(activator, abilityCooldown, cooldowns))
-            return;
-
         BleachPlayer bleachActivator = new BleachPlayer(activator);
         int reiatsuCost = plugin.getConfig().getInt("Zangetsu.getsugaTenshouCost");
 
         if(bleachActivator.getCurrentReiatsu() < reiatsuCost)
             return;
 
+
+        if(!checkCooldown(activator, abilityCooldown, cooldowns))
+            return;
 
         bleachActivator.setCurrentReiatsu(bleachActivator.getCurrentReiatsu() - reiatsuCost);
         SoundAndEffectsUtils.playSound(activator.getLocation(), Sound.BLOCK_CHAIN_BREAK, 4);
@@ -71,7 +72,7 @@ public class GetsugaTenshou implements Ability {
                 for(Entity entity : proj.getNearbyEntities(1.5,2.5,1.5)){
                     if((entity instanceof LivingEntity) && !entity.equals(activator)){
                         entity.setMetadata("attacker", new FixedMetadataValue(plugin, activator.getName()));
-                        ((LivingEntity) entity).damage(damage);
+                        ((LivingEntity) entity).damage(RandomUtils.calculateDamageApplied(damage, (LivingEntity) entity));
                     }
                 }
 

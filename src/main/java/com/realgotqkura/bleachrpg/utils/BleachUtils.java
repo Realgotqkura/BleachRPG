@@ -1,18 +1,25 @@
 package com.realgotqkura.bleachrpg.utils;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class BleachUtils {
 
     public static HashMap<Player, Float> playerReiatsuMap = new HashMap<>();
+    public static List<String> zanpakutoSpiritList = new ArrayList<>(Arrays.asList("zangetsu"));
 
     /**
      * Reiatsu utils for now
@@ -154,5 +161,27 @@ public class BleachUtils {
                 player.getInventory().remove(stack);
             }
         }
+    }
+
+    public static void makePlayerSleep(Player player){
+        final PacketContainer bedPacket = BleachRPG.getProtocolManager().createPacket(PacketType.Play.Server.BED, false);
+        final Location loc = player.getLocation();
+
+        bedPacket.getEntityModifier(player.getWorld()).write(0, player);
+        bedPacket.getIntegers().
+                write(1, loc.getBlockX()).
+                write(2, loc.getBlockY() + 1).
+                write(3, loc.getBlockZ());
+
+        BleachRPG.getProtocolManager().sendServerPacket(player, bedPacket);
+    }
+
+    public static void stopPlayerSleep(Player player){
+        final PacketContainer animation = BleachRPG.getProtocolManager().createPacket(PacketType.Play.Server.ANIMATION, false);
+
+        animation.getEntityModifier(player.getWorld()).write(0, player);
+        animation.getIntegers().write(1, 2);
+
+        BleachRPG.getProtocolManager().sendServerPacket(player, animation);
     }
 }

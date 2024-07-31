@@ -8,6 +8,7 @@ import com.realgotqkura.bleachrpg.items.ShikaiItems;
 import com.realgotqkura.bleachrpg.items.ZanpakutoItems;
 import com.realgotqkura.bleachrpg.utils.*;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
+import com.realgotqkura.bleachrpg.utils.voicelines.BankaiVoiceLines;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -17,7 +18,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,11 +100,9 @@ public class SoulReaperBadge implements Listener {
         if(player.getShinigamiStage() == ShinigamiStage.HUMAN){
             player.setShinigamiStage(ShinigamiStage.REGULAR);
 
-            /**
-             * TODO: Give him his rolled zanpakuto
-             */
+
             ZanpakutoItems items = new ZanpakutoItems(plugin);
-            RandomUtils.addItemIntoPlInventory(bukkitPlayer, items.getZanpakuto("zangetsu", ShinigamiStage.REGULAR), 0);
+            RandomUtils.addItemIntoPlInventory(bukkitPlayer, items.getZanpakuto(player.getSpirit().toString(), ShinigamiStage.REGULAR), 0);
 
             bukkitPlayer.sendTitle(RandomUtils.color("&8Shinigami"), "", 10, 20, 10);
             return;
@@ -174,7 +172,7 @@ public class SoulReaperBadge implements Listener {
 
 
     private void doBankaiAnimation(BleachPlayer player, String zanpakutoName){
-        VoiceLines vl = new VoiceLines();
+        BankaiVoiceLines vl = new BankaiVoiceLines();
 
         RandomUtils.sendMultipleAnimatedTitles(vl.getVoiceLines(zanpakutoName).get(0), vl.getVoiceLines(zanpakutoName).get(1),
                 1, plugin, player.getBukkitPlayer(), 20);

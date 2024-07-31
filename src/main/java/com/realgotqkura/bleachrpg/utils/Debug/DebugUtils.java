@@ -28,6 +28,8 @@ public class DebugUtils {
                 cancel();
             }
         }.runTaskLater(plugin, 10);
-
     }
+
+    public static boolean TEST_MODE = false;
+
 }

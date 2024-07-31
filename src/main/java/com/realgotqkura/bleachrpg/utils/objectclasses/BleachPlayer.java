@@ -6,6 +6,7 @@ import com.realgotqkura.bleachrpg.utils.BleachFaction;
 import com.realgotqkura.bleachrpg.utils.BleachUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.ShinigamiStage;
+import com.realgotqkura.bleachrpg.utils.objectclasses.spirits.ZanpakutoSpirits;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -96,8 +97,8 @@ public class BleachPlayer {
     }
 
 
-    public String getSpirit(){
-        return plConfig.getConfig().getString("players." + player.getUniqueId() + ".spirit");
+    public ZanpakutoSpirits getSpirit(){
+        return ZanpakutoSpirits.fromString(plConfig.getConfig().getString("players." + player.getUniqueId() + ".spirit"));
     }
 
 

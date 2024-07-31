@@ -9,6 +9,7 @@ import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.ShinigamiStage;
 import com.realgotqkura.bleachrpg.utils.SoundAndEffectsUtils;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
+import com.realgotqkura.bleachrpg.utils.objectclasses.spirits.ZanpakutoSpirits;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
@@ -81,7 +82,7 @@ public class ZangetsuEvents implements Listener {
     public void moveBankai(PlayerMoveEvent event){
         BleachPlayer player = new BleachPlayer(event.getPlayer());
 
-        if(player.getSpirit().equalsIgnoreCase("zangetsu") && player.getShinigamiStage().toInt() >= ShinigamiStage.BANKAI.toInt()){
+        if(player.getSpirit() == ZanpakutoSpirits.ZANGETSU && player.getShinigamiStage().toInt() >= ShinigamiStage.BANKAI.toInt()){
             int speedAmp = plugin.getConfig().getInt("Zangetsu.speedPotEffectAmp");
             int strengthAmp = plugin.getConfig().getInt("Zangetsu.strengthPotEffectAmp");
             player.getBukkitPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20, strengthAmp, false));

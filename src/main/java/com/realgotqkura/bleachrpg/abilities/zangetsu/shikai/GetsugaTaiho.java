@@ -1,6 +1,7 @@
 package com.realgotqkura.bleachrpg.abilities.zangetsu.shikai;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
+import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.SoundAndEffectsUtils;
 import com.realgotqkura.bleachrpg.utils.objectclasses.Ability;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
@@ -34,18 +35,19 @@ public class GetsugaTaiho implements Ability {
 
     @Override
     public void activateAbility(Player activator, Player target) {
-        if(!checkCooldown(activator, abilityCooldown, cooldowns))
-            return;
-
         BleachPlayer bleachActivator = new BleachPlayer(activator);
-
-        int range = plugin.getConfig().getInt("Zangetsu.getsugaTaihoRadius");
 
         int reiatsuCost = plugin.getConfig().getInt("Zangetsu.getsugaTaihoCost");
 
         if(bleachActivator.getCurrentReiatsu() < reiatsuCost)
             return;
 
+
+
+        if(!checkCooldown(activator, abilityCooldown, cooldowns))
+            return;
+
+        int range = plugin.getConfig().getInt("Zangetsu.getsugaTaihoRadius");
 
         bleachActivator.setCurrentReiatsu(bleachActivator.getCurrentReiatsu() - reiatsuCost);
 
@@ -64,7 +66,7 @@ public class GetsugaTaiho implements Ability {
 
             lEntity.setVelocity(launchVec);
             lEntity.setMetadata("attacker", new FixedMetadataValue(plugin, activator.getName()));
-            lEntity.damage(damage);
+            lEntity.damage(RandomUtils.calculateDamageApplied(damage, lEntity));
         }
 
         Vector plVec = activator.getVelocity();

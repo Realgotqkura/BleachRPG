@@ -1,8 +1,11 @@
 package com.realgotqkura.bleachrpg.npc;
 
+import com.realgotqkura.bleachrpg.BleachRPG;
+import com.realgotqkura.bleachrpg.npc.npcs.ShikaiBossNPC;
 import com.realgotqkura.bleachrpg.npc.npcs.UraharaNPC;
 import com.realgotqkura.bleachrpg.utils.LangUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
+import com.realgotqkura.bleachrpg.utils.objectclasses.spirits.ZanpakutoSpirits;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,6 +36,9 @@ public class NPCCommands implements CommandExecutor {
             switch (args[0].toLowerCase()){
                 case "urahara":
                     new UraharaNPC(player.getLocation());
+                    break;
+                case "shikaiboss":
+                    new ShikaiBossNPC(player.getLocation(), ZanpakutoSpirits.ZANGETSU, BleachRPG.instance, player.getLocation());
                     break;
             }
 

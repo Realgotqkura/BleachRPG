@@ -15,6 +15,7 @@ public class NPCCommandsTC implements TabCompleter {
             if(strings.length == 1){
                 List<String> args = new ArrayList<>();
                 args.add("urahara");
+                args.add("shikaiboss");
                 return args;
             }
         }

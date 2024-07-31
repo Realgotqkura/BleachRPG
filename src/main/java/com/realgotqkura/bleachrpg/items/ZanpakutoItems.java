@@ -54,6 +54,7 @@ public class ZanpakutoItems {
         AttributeModifier attackSpeedModifier = null;
         switch (stage){
             case REGULAR:
+                meta.setDisplayName(ChatColor.of("#949494") + "" + ChatColor.BOLD + "Zanpakuto");
                 lore.add(RandomUtils.color("&7Attack Speed: &eMedium"));
                 attackSpeedModifier =  new AttributeModifier(UUID.randomUUID(), "generic.attackspeed", -2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
                 break;

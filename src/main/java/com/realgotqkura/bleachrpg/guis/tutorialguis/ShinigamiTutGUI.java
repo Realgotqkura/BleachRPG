@@ -1,8 +1,9 @@
-package com.realgotqkura.bleachrpg.guis;
+package com.realgotqkura.bleachrpg.guis.tutorialguis;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
-import com.realgotqkura.bleachrpg.guis.tutorialguis.ShinigamiTutGUI;
+import com.realgotqkura.bleachrpg.guis.TutorialGUI;
 import com.realgotqkura.bleachrpg.items.GuiItems;
+import com.realgotqkura.bleachrpg.items.guispecific.tutorial.ShinigamiTutItems;
 import com.realgotqkura.bleachrpg.items.guispecific.tutorial.TutorialGUIItems;
 import com.realgotqkura.bleachrpg.utils.GUISorting;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
@@ -13,15 +14,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-public class TutorialGUI implements Listener {
+public class ShinigamiTutGUI implements Listener {
+
 
     private BleachRPG plugin;
 
-    public TutorialGUI(BleachRPG plugin){
+    public ShinigamiTutGUI(BleachRPG plugin){
         this.plugin = plugin;
     }
     public Inventory tutorialInv;
-    private String invTitle = RandomUtils.color("&bBleachRPG Tutorial");
+    private String invTitle = RandomUtils.color("&bBleachRPG Shinigami Tutorial");
 
     public void createInv(Player player){
         Inventory inv = Bukkit.createInventory(null, 54, invTitle);
@@ -31,14 +33,11 @@ public class TutorialGUI implements Listener {
         sorting.GetInner(inv, 54);
 
         GuiItems items = new GuiItems();
-        TutorialGUIItems tutItems = new TutorialGUIItems();
+        ShinigamiTutItems tutItems = new ShinigamiTutItems();
 
         inv.setItem(49, items.GUIClose());
 
-        inv.setItem(20, tutItems.learnDash(plugin));
-        inv.setItem(21, tutItems.learnXpGain(plugin));
-        inv.setItem(22, tutItems.learnBasicCombat(plugin));
-        inv.setItem(29, tutItems.shinigamiTutorialGUI());
+        inv.setItem(20, tutItems.unlockingShikai(plugin));
 
         player.openInventory(inv);
     }
@@ -53,14 +52,8 @@ public class TutorialGUI implements Listener {
         Player player = (Player) event.getWhoClicked();
 
         if(event.getSlot() == 49) {
-            player.closeInventory();
-            return;
-        }
-
-        if(event.getSlot() == 29){
-            ShinigamiTutGUI gui = new ShinigamiTutGUI(plugin);
+            TutorialGUI gui = new TutorialGUI(plugin);
             gui.createInv(player);
-            return;
         }
     }
 }

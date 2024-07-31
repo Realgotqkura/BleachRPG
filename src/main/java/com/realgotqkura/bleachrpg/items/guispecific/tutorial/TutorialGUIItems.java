@@ -1,4 +1,4 @@
-package com.realgotqkura.bleachrpg.items.guispecific;
+package com.realgotqkura.bleachrpg.items.guispecific.tutorial;
 
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.utils.LangUtils;
@@ -52,6 +52,18 @@ public class TutorialGUIItems {
         meta.setLore(lore);
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
+    public ItemStack shinigamiTutorialGUI(){
+        ItemStack stack = new ItemStack(Material.NETHER_STAR);
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(RandomUtils.color(ChatColor.of("#ff524d") + "&lSoul Reapers"));
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add(RandomUtils.color("&e&lCLICK &7for more info"));
+        meta.setLore(lore);
         stack.setItemMeta(meta);
         return stack;
     }

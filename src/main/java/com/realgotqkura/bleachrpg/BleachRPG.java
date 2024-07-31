@@ -20,16 +20,21 @@ import com.realgotqkura.bleachrpg.events.zanpakuto.zangetsu.ZangetsuEvents;
 import com.realgotqkura.bleachrpg.guis.MeditationGUI;
 import com.realgotqkura.bleachrpg.guis.SpiritualLevelInv;
 import com.realgotqkura.bleachrpg.guis.TutorialGUI;
+import com.realgotqkura.bleachrpg.guis.tutorialguis.ShinigamiTutGUI;
 import com.realgotqkura.bleachrpg.items.BleachItems;
 import com.realgotqkura.bleachrpg.items.guispecific.SpiritualLevelItems;
 import com.realgotqkura.bleachrpg.npc.NPCCommands;
 import com.realgotqkura.bleachrpg.npc.NPCCommandsTC;
+import com.realgotqkura.bleachrpg.npc.npcs.ShikaiBossNPC;
 import com.realgotqkura.bleachrpg.npc.npcs.UraharaNPC;
 import com.realgotqkura.bleachrpg.utils.BleachUtils;
 import com.realgotqkura.bleachrpg.utils.ConfigUtils;
 import com.realgotqkura.bleachrpg.utils.Debug.DebugUtils;
 import com.realgotqkura.bleachrpg.utils.LangUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
+import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.CitizensAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BleachRPG extends JavaPlugin {
@@ -80,6 +85,7 @@ public final class BleachRPG extends JavaPlugin {
     public void onDisable() {
         LangUtils.deleteLangFiles();
         JLogger.log(JLogSeverity.INFO, "Disabling BleachRPG");
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "/citizens save");
     }
 
 
@@ -88,15 +94,19 @@ public final class BleachRPG extends JavaPlugin {
         this.getCommand("bleachlang").setTabCompleter(new LanguageTabComp());
         this.getCommand("getzanpakuto").setExecutor(new ShinigamiCommands(this));
         this.getCommand("getzanpakuto").setTabCompleter(new ShinigamiTabComp());
-        this.getCommand("bleachrpg_tutorial").setExecutor(new GeneralCmds(this, playerConf));
-        this.getCommand("bleachitem").setExecutor(new GeneralCmds(this, playerConf));
+        this.getCommand("bleachrpg_tutorial").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
+        this.getCommand("bleachitem").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
         this.getCommand("bleachitem").setTabCompleter(new GeneralTabComp());
         this.getCommand("bleachrpg_debug").setExecutor(new DebugCommands());
         this.getCommand("bleachrpg_debug").setTabCompleter(new DebugTabCompleters());
-        this.getCommand("spiritualLvlgui").setExecutor(new GeneralCmds(this, playerConf));
-        this.getCommand("meditate").setExecutor(new GeneralCmds(this, playerConf));
+        this.getCommand("spiritualLvlgui").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
+        this.getCommand("meditate").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
         this.getCommand("bleachnpcspawn").setExecutor(new NPCCommands());
         this.getCommand("bleachnpcspawn").setTabCompleter(new NPCCommandsTC());
+        this.getCommand("bleach_reloadConfigs").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
+        this.getCommand("bleach_admin_regionwand").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
+        this.getCommand("bleach_set_arena_region").setExecutor(new GeneralCmds(this, playerConf, xpConfig));
+        this.getCommand("bleach_set_arena_region").setTabCompleter(new GeneralTabComp());
     }
 
     private void registerEvents(){
@@ -110,6 +120,8 @@ public final class BleachRPG extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new ItemEvents(),this);
         this.getServer().getPluginManager().registerEvents(new SoulReaperBadge(this), this);
         this.getServer().getPluginManager().registerEvents(new MeditationGUI(this, playerConf), this);
+        this.getServer().getPluginManager().registerEvents(new ShinigamiTutGUI(this), this);
+        this.getServer().getPluginManager().registerEvents(new RegionEvents(), this);
 
         //Abilities
         this.getServer().getPluginManager().registerEvents(new DashAndFS(this), this);
@@ -117,7 +129,8 @@ public final class BleachRPG extends JavaPlugin {
 
 
         //NPCS
-        this.getServer().getPluginManager().registerEvents(new UraharaNPC(), this);
+        CitizensAPI.registerEvents(new UraharaNPC());
+        CitizensAPI.registerEvents(new ShikaiBossNPC());
     }
 
     private void loadMaps(){

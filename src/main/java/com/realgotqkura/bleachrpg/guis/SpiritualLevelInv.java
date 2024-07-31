@@ -3,7 +3,6 @@ package com.realgotqkura.bleachrpg.guis;
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.items.GuiItems;
 import com.realgotqkura.bleachrpg.items.guispecific.SpiritualLevelItems;
-import com.realgotqkura.bleachrpg.items.guispecific.TutorialGUIItems;
 import com.realgotqkura.bleachrpg.utils.GUISorting;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;

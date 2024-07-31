@@ -31,6 +31,14 @@ public class GeneralTabComp implements TabCompleter {
                 return args;
             }
         }
+        if(s.equalsIgnoreCase("bleach_set_arena_region")){
+            if(strings.length == 1){
+                List<String> args = new ArrayList<>();
+                args.add("player_location");
+                args.add("boss_location");
+                return args;
+            }
+        }
         return null;
     }
 }

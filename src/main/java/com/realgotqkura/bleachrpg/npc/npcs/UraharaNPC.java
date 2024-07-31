@@ -3,6 +3,8 @@ package com.realgotqkura.bleachrpg.npc.npcs;
 import com.realgotqkura.bleachrpg.BleachRPG;
 import com.realgotqkura.bleachrpg.items.BleachItems;
 import com.realgotqkura.bleachrpg.utils.BleachFaction;
+import com.realgotqkura.bleachrpg.utils.BleachUtils;
+import com.realgotqkura.bleachrpg.utils.Debug.DebugUtils;
 import com.realgotqkura.bleachrpg.utils.RandomUtils;
 import com.realgotqkura.bleachrpg.utils.SoundAndEffectsUtils;
 import net.citizensnpcs.api.CitizensAPI;
@@ -26,175 +28,162 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class UraharaNPC implements Listener {
 
     private NPC npc;
+
     private static String npcName = "";
 
-    public static final List<String> SRLinesBeforeQuestion = new ArrayList<>(Arrays.asList(
-            RandomUtils.color("&fHey there, I see you are interested in becoming a Soul Reaper"),
+    public static final List<String> SRLinesBeforeQuestion = new ArrayList<>(Arrays.asList(new String[] { RandomUtils.color("&fHey there, I see you are interested in becoming a Soul Reaper"),
             RandomUtils.color("&fNow I'm not one to help with such things, but I will make an exception."),
             RandomUtils.color("&fBut first you would have to answer one of my questions :)))"),
             RandomUtils.color("&fWhat is..."),
-            RandomUtils.color("&f9+10?")
-    ));
+            RandomUtils.color("&f9+10?") }));
 
-    public static final List<String> SRLinesAfterQuestion = new ArrayList<>(Arrays.asList(
-            RandomUtils.color("&foooo, good job!"),
+    public static final List<String> SRLinesAfterQuestion = new ArrayList<>(Arrays.asList(new String[] { RandomUtils.color("&foooo, good job!"),
             RandomUtils.color("&fNow, it's going to hurt so yeah..."),
             RandomUtils.color("&f3"),
             RandomUtils.color("&f2"),
             RandomUtils.color("&f1..."),
             RandomUtils.color("&faaand done!"),
             RandomUtils.color("&fCongrats! You are a soul reaper now."),
-            RandomUtils.color("&fto learn more do /bleachrpg_tutorial")
-    ));
+            RandomUtils.color("&fto learn more do /bleachrpg_tutorial") }));
 
     private static HashMap<Player, Boolean> isInDialogue = new HashMap<>();
 
-    public UraharaNPC(Location loc){
+    public UraharaNPC(Location loc) {
         npcName = BleachRPG.instance.getConfig().getString("Urahara.Name");
-        npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
-        npc.spawn(loc);
-        SkinTrait skin = npc.getTraitNullable(SkinTrait.class);
+        this.npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, npcName);
+        this.npc.spawn(loc);
+        SkinTrait skin = this.npc.getTraitNullable(SkinTrait.class);
         skin.setSkinName("KisukeUrahara");
-
     }
 
-    //For the initialization
-    public UraharaNPC(){};
+    public UraharaNPC() {
+        npcName = BleachRPG.instance.getConfig().getString("Urahara.Name");
+    }
 
-    public NPC getNpc(){
-        return npc;
+    public NPC getNpc() {
+        return this.npc;
     }
 
     @EventHandler
-    public void click(NPCRightClickEvent event){
-        if(!event.getNPC().getName().equals(ChatColor.stripColor(npcName)))
+    public void click(NPCRightClickEvent event) {
+        if (!event.getNPC().getName().contains(ChatColor.stripColor(npcName)))
             return;
-
         Player player = event.getClicker();
 
-        if(isInDialogue.get(player) == null)
+        if (isInDialogue.get(player) == null)
             isInDialogue.put(player, false);
 
-        if(isInDialogue.get(player))
+        if ((isInDialogue.get(player)))
             return;
 
-        if(player.getInventory().getItemInMainHand() == null)
+        if (player.getInventory().getItemInMainHand() == null)
             return;
 
-        if(!player.getInventory().getItemInMainHand().hasItemMeta())
+        if (!player.getInventory().getItemInMainHand().hasItemMeta())
             return;
 
-        if(player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(RandomUtils.color("&aNPC Deleter"))){
+        if (player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(RandomUtils.color("&aNPC Deleter"))) {
             CitizensAPI.getNPCRegistry().getNPC(event.getNPC().getEntity()).destroy();
             player.sendMessage(RandomUtils.color("&aSuccessfully deleted " + npcName));
         }
     }
 
     @EventHandler
-    public void clickDialogue(NPCRightClickEvent event){
-        if(!event.getNPC().getName().equals(ChatColor.stripColor(npcName)))
+    public void clickDialogue(NPCRightClickEvent event) {
+        if (!event.getNPC().getName().equals(ChatColor.stripColor(npcName)))
             return;
-
         Player player = event.getClicker();
 
-        if(isInDialogue.get(player) == null)
-            isInDialogue.put(player, false);
+        if (isInDialogue.get(player) == null)
+            isInDialogue.put(player, Boolean.valueOf(false));
 
-        if(isInDialogue.get(player))
+        if ((isInDialogue.get(player)).booleanValue())
             return;
-
 
         FileConfiguration config = BleachRPG.instance.getConfig();
         FileConfiguration plConfig = BleachRPG.playerConf.getConfig();
-        List<String> beforeQuestionLines = (List<String>) config.getList("Urahara.SoulReaperLinesBeforeQuestion");
+        List<String> beforeQuestionLines = Arrays.asList(RandomUtils.processVoiceLines(config.getStringList("Urahara.SoulReaperLinesBeforeQuestion"), player));
+        int speed = config.getInt("Urahara.SoulReaperLinesSpeedInTicks");
         BleachItems items = new BleachItems();
-
-        if(!plConfig.getBoolean("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion")){
-            isInDialogue.put(player, true);
-            new BukkitRunnable(){
-
+        if (!plConfig.getBoolean("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion")) {
+            isInDialogue.put(player, Boolean.valueOf(true));
+            (new BukkitRunnable() {
                 int index = 0;
-                @Override
+
                 public void run() {
-                    player.sendMessage(RandomUtils.color("&e[" + npcName + "&e]: " + beforeQuestionLines.get(index)));
-                    index++;
+                    player.sendMessage(RandomUtils.color("&e[" + UraharaNPC.npcName + "&e]: " + beforeQuestionLines.get(this.index)));
+                    this.index++;
+                    if (this.index == beforeQuestionLines.size()) {
+                        UraharaNPC.isInDialogue.put(player, Boolean.valueOf(false));
 
-                    if(index == beforeQuestionLines.size()){
-                        isInDialogue.put(player, false);
-                        plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion", true);
+                        if (!DebugUtils.TEST_MODE)
+                            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion", Boolean.valueOf(true));
 
-                        if(config.getBoolean("Urahara.SoulReaperLinesNoQuestion")){
-                            //Make him soul reaper
+                        if (config.getBoolean("Urahara.SoulReaperLinesNoQuestion")) {
                             RandomUtils.addItemIntoPlInventory(player, items.getSpecificItem("SubstituteShinigamiBadge"), 8);
-                            RandomUtils.sendMultipleAnimTitlesNoTransform(new String[]{RandomUtils.color("&7&lYou are now a Soul Reaper!")},
-                                    new String[]{""}, 1, BleachRPG.instance, player, 20);
-                            SoundAndEffectsUtils.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1);
+                            RandomUtils.sendMultipleAnimTitlesNoTransform(new String[] { RandomUtils.color("&7&lYou are now a Soul Reaper!") }, new String[] { "" }, 1, BleachRPG.instance, player, 20);
+                            SoundAndEffectsUtils.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F);
                             SoundAndEffectsUtils.makeParticlePrecise(player.getLocation(), Particle.FIREWORKS_SPARK, 10);
-                            plConfig.set("players." + player.getUniqueId() + ".faction", BleachFaction.SHINIGAMI.toInt());
+                            plConfig.set("players." + player.getUniqueId() + ".faction", Integer.valueOf(BleachFaction.SHINIGAMI.toInt()));
                             BleachRPG.playerConf.saveConfig();
-
-                        }else{
-                            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion", true);
+                        } else {
+                            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion", Boolean.valueOf(true));
                             BleachRPG.playerConf.saveConfig();
                         }
-
                         cancel();
                     }
                 }
-
-            }.runTaskTimer(BleachRPG.instance, 1, 70);
-            return;
+            }).runTaskTimer(BleachRPG.instance, 1L, speed);
         }
     }
 
-
     @EventHandler
-    public void answerQuestion(AsyncPlayerChatEvent event){
+    public void answerQuestion(AsyncPlayerChatEvent event) {
         FileConfiguration plConfig = BleachRPG.playerConf.getConfig();
-
         Player player = event.getPlayer();
-        if(!plConfig.getBoolean("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion"))
+
+        if (!plConfig.getBoolean("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion"))
             return;
 
         event.setCancelled(true);
         String answer = BleachRPG.instance.getConfig().getString("Urahara.SoulReaperLinesAnswer");
         String msg = event.getMessage().trim();
         BleachItems items = new BleachItems();
-
-        List<String> afterQuestionLines = (List<String>) BleachRPG.instance.getConfig().getList("Urahara.SoulReaperLinesAfterQuestion");
-        if(answer.equals(msg)){
-            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion", false);
+        int speed = BleachRPG.instance.getConfig().getInt("Urahara.SoulReaperLinesSpeedInTicks");
+        player.sendMessage(RandomUtils.color("&e[&c" + player.getName() + "&e]: &f" + event.getMessage()));
+        List<String> afterQuestionLines = Arrays.asList(RandomUtils.processVoiceLines(BleachRPG.instance.getConfig().getStringList("Urahara.SoulReaperLinesAfterQuestion"), player));
+        if (answer.equals(msg)) {
+            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaAnsweringQuestion", Boolean.valueOf(false));
             BleachRPG.playerConf.saveConfig();
-            isInDialogue.put(player, true);
-            new BukkitRunnable(){
-
+            isInDialogue.put(player, Boolean.valueOf(true));
+            (new BukkitRunnable() {
                 int index = 0;
-                @Override
-                public void run() {
-                    player.sendMessage(RandomUtils.color("&e[" + npcName + "&e]: " + afterQuestionLines.get(index)));
-                    index++;
 
-                    if(index == afterQuestionLines.size()){
-                        isInDialogue.put(player, false);
+                public void run() {
+                    player.sendMessage(RandomUtils.color("&e[" + UraharaNPC.npcName + "&e]: " + afterQuestionLines.get(this.index)));
+                    this.index++;
+                    if (this.index == afterQuestionLines.size()) {
+                        UraharaNPC.isInDialogue.put(player, Boolean.valueOf(false));
                         RandomUtils.addItemIntoPlInventory(player, items.getSpecificItem("SubstituteShinigamiBadge"), 8);
-                        RandomUtils.sendMultipleAnimTitlesNoTransform(new String[]{RandomUtils.color("&7&lYou are now a Soul Reaper!")},
-                                new String[]{""}, 1, BleachRPG.instance, player, 20);
-                        SoundAndEffectsUtils.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1);
+                        RandomUtils.sendMultipleAnimTitlesNoTransform(new String[] { RandomUtils.color("&7&lYou are now a Soul Reaper!") }, new String[] { "" }, 1, BleachRPG.instance, player, 20);
+                        SoundAndEffectsUtils.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F);
                         SoundAndEffectsUtils.makeParticlePrecise(player.getLocation(), Particle.FIREWORKS_SPARK, 10);
-                        plConfig.set("players." + player.getUniqueId() + ".faction", BleachFaction.SHINIGAMI.toInt());
-                        player.damage(player.getHealth()-1);
+                        plConfig.set("players." + player.getUniqueId() + ".faction", Integer.valueOf(BleachFaction.SHINIGAMI.toInt()));
+                        int rngSpirit = ThreadLocalRandom.current().nextInt(0, BleachUtils.zanpakutoSpiritList.size());
+                        plConfig.set("players." + player.getUniqueId() + ".spirit", BleachUtils.zanpakutoSpiritList.get(rngSpirit));
+                        player.damage(player.getHealth() - 1.0D);
                         BleachRPG.playerConf.saveConfig();
                         cancel();
                     }
                 }
-
-            }.runTaskTimer(BleachRPG.instance, 1, 60);
-        }else{
-            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion", false);
+            }).runTaskTimer(BleachRPG.instance, 1L, speed);
+        } else {
+            plConfig.set("players." + player.getUniqueId() + ".Dialogues.UraharaBeforeQuestion", Boolean.valueOf(false));
             player.sendMessage(RandomUtils.color("&e[" + npcName + "&e]:" + BleachRPG.instance.getConfig().getString("Urahara.SoulReaperLinesAnsnwerWrongLine")));
         }
     }
