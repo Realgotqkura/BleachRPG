@@ -1,1 +1,1 @@
-#BleachRPG - The Best In-depth Spigot based minecraft RPG
+# BleachRPG - The Best In-depth Spigot based minecraft RPG
