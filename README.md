@@ -6,9 +6,9 @@ In the end you would be able to develop your own parts and it will act as a sort
 
 ## Table Of Contents
 
-- [Current Features](#features)
-- [Future Features](#installation)
-- [Currently In Development](#configuration)
+- [Current Features](#current_features)
+- [Future Features](#future_features)
+- [Currently In Development](#currently_in_development)
 - [Contribution](#contribution)
 
  ## Current Features
@@ -18,7 +18,8 @@ In the end you would be able to develop your own parts and it will act as a sort
  - **Boss Battles** A system for fighting your shikai/bankai is added.
  - **Stat system** A stats system for many different things exists
  - **Setting up Arenas:** Setup your own arenas to fight bosses
-
+ - **Custom Texturepack:** Yeah it exists.
+   
  ## Future Features
 
 - **Faction skill + Missions:** Go on missions to level up your faction XP. Go from 15th seat to a Captain in your faction.
@@ -30,11 +31,10 @@ In the end you would be able to develop your own parts and it will act as a sort
 
 ## Currently In Development
 
-- **Shikai/Bankai tuning and polishing:** Polishing the boss battles and making them better
-- **Custom Texturepack:** Currently making a custom texturepack
+- **Faction Leveling and Missions**
 
 
-##Contribution
+## Contribution
 To contribute:
 
 1. Fork the repository.
