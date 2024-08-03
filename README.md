@@ -6,9 +6,9 @@ In the end you would be able to develop your own parts and it will act as a sort
 
 ## Table Of Contents
 
-- [Current Features](#current_features)
-- [Future Features](#future_features)
-- [Currently In Development](#currently_in_development)
+- [Current Features](#current-features)
+- [Future Features](#future-features)
+- [Currently In Development](#currently-in-development)
 - [Contribution](#contribution)
 
  ## Current Features
