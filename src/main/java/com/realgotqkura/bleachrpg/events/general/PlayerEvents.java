@@ -10,6 +10,7 @@ import com.realgotqkura.bleachrpg.utils.SoundAndEffectsUtils;
 import com.realgotqkura.bleachrpg.utils.objectclasses.BleachPlayer;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.apache.commons.codec.binary.Hex;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -155,6 +156,8 @@ public class PlayerEvents implements Listener {
         player.sendMessage(RandomUtils.color("&cYou can't send commands whilst in battle!"));
     }
 
+
+
     @EventHandler
     public void arenaFightLogOut(PlayerQuitEvent event){
         Player player = event.getPlayer();
@@ -169,6 +172,11 @@ public class PlayerEvents implements Listener {
         plugin.getConfig().set("Arena.isBusy", false);
         plugin.getConfig().set("Arena.playerFighting", "");
         plugin.saveConfig();
+    }
+
+    @EventHandler
+    public void applyTexturePack(PlayerJoinEvent event){
+        event.getPlayer().setResourcePack("https://www.dropbox.com/scl/fo/ffqkp6hk2wvnecck6jqet/ANasr109H_omQrOstWoRWbk?rlkey=tx1dhyfj4nfs0xtsu2pi9s93h&st=huk0dqbi&dl=1");
     }
 
 

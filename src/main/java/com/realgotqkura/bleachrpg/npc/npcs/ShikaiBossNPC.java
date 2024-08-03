@@ -141,7 +141,7 @@ public class ShikaiBossNPC implements Listener {
                     cancel();
                     return;
                 }
-                player.sendMessage(RandomUtils.color("&e[ &r" + npcName + "&e]: &r") + loseFightVoiceLines[index]);
+                player.sendMessage(RandomUtils.color("&e[&r" + npcName + "&e]: &r") + loseFightVoiceLines[index]);
 
 
                 index++;
@@ -201,7 +201,7 @@ public class ShikaiBossNPC implements Listener {
                         cancel();
                         return;
                     }
-                    player.sendMessage(RandomUtils.color("&e[ &r" + npcName + "&e]: &r") + winFightVoiceLines[index]);
+                    player.sendMessage(RandomUtils.color("&e[&r" + npcName + "&e]: &r") + winFightVoiceLines[index]);
 
 
                     index++;
@@ -247,9 +247,9 @@ public class ShikaiBossNPC implements Listener {
                     isInDialogue.put(player, false);
                     plConfig.getConfig().set("players." + player.getUniqueId() + ".Dialogues.ZangetsuHeardBeforeFightVL", true);
                     BleachRPG.playerConf.saveConfig();
-                    event.getNPC().addTrait(SentinelTrait.class);
-                    SentinelTrait sentinel = event.getNPC().getOrAddTrait(SentinelTrait.class);
-                    event.getNPC().getEntity().setMetadata("Shikai", new FixedMetadataValue(plugin, 1));
+                    npc.addTrait(SentinelTrait.class);
+                    SentinelTrait sentinel = npc.getOrAddTrait(SentinelTrait.class);
+                    npc.getEntity().setMetadata("Shikai", new FixedMetadataValue(plugin, 1));
                     sentinel.addTarget("uuid:" + player.getUniqueId());
                     sentinel.respawnTime = -1;
                     sentinel.attackRate = 5;
@@ -262,6 +262,7 @@ public class ShikaiBossNPC implements Listener {
                     Equipment trait = npc.getOrAddTrait(Equipment.class);
                     trait.set(Equipment.EquipmentSlot.HAND, new ItemStack(Material.IRON_SWORD));
                     sentinel.damage = 2;
+                    sentinel.range = 10;
                     npc = event.getNPC();
 
                     BossBar bossbar = Bukkit.createBossBar(npcName, BarColor.RED, BarStyle.SEGMENTED_6);
@@ -271,7 +272,7 @@ public class ShikaiBossNPC implements Listener {
                     cancel();
                     return;
                 }
-                player.sendMessage(RandomUtils.color("&e[ &r" + npcName + "&e]: &r") + beforeFightVoiceLines[index]);
+                player.sendMessage(RandomUtils.color("&e[&r" + npcName + "&e]: &r") + beforeFightVoiceLines[index]);
 
 
                 index++;
@@ -311,8 +312,8 @@ public class ShikaiBossNPC implements Listener {
         SentinelTrait trait = npc.getTraitNullable(SentinelTrait.class);
 
 
-        Bukkit.broadcastMessage("E");
-        double percent = trait.health / maxHealth;
+        double percent = (trait.getLivingEntity().getHealth() - event.getDamage()) / maxHealth;
+        Bukkit.broadcastMessage("P: " + percent + ", HP: " + trait.health + ", MAX: " + maxHealth);
         currentBossBar.setProgress(percent);
         List<Player> currentPlayers = currentBossBar.getPlayers();
         currentBossBar.removeAll();

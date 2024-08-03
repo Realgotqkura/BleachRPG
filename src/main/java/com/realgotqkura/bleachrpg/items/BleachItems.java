@@ -98,6 +98,7 @@ public class BleachItems {
         lore.add(ChatColor.of("#A29692") + "regular -> shikai -> bankai ->");
         lore.add(ChatColor.of("#A29692") + "true bankai -> mugetsu");
         meta.setLore(lore);
+        meta.setCustomModelData(1);
         meta.getPersistentDataContainer().set(RandomUtils.nskStorage.get("BleachItem"), PersistentDataType.INTEGER, 8);
         meta.getPersistentDataContainer().set(RandomUtils.nskStorage.get("BleachUncraftable"), PersistentDataType.BOOLEAN, true);
         meta.addEnchant(Enchantment.DURABILITY,1,true);

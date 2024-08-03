@@ -51,6 +51,8 @@ public class ZanpakutoItems {
         lore.add(RandomUtils.color("&7Damage: &c" + configUtils.getDamage("zangetsu", stage) + "⚔"));
         lore.add(RandomUtils.color("&7Reiatsu: &b" + configUtils.getReiatsu("zangetsu", stage) + "✺"));
 
+        meta.setCustomModelData(100);
+
         AttributeModifier attackSpeedModifier = null;
         switch (stage){
             case REGULAR:
